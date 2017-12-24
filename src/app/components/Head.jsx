@@ -1,28 +1,50 @@
 import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { getHeadTitle, getHeadDescription } from "../selectors/headSelectors";
+import { Route, Switch } from "react-router-dom"
 
-const Head = ({ headTitle, headDescription }) => [
-  <meta charSet="UTF-8" key="charset" />,
-  <meta httpEquiv="X-UA-Compatible" content="ie=edge" key="http-equiv" />,
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-    key="viewport"
-  />,
-  <meta name="description" content={headDescription} key="description" />,
-  <title key="title">{headTitle}</title>,
-  <link rel="stylesheet" href="/public/bundle.css" key="stylesheet" />
-];
-
-Head.propTypes = {
-  headTitle: PropTypes.string.isRequired
-};
-
-const mapStateToProps = state => ({
-  headTitle: getHeadTitle(state),
-  headDescription: getHeadDescription(state)
-});
-
-export default connect(mapStateToProps)(Head);
+const Head = () => (
+  <>
+    <meta charSet="UTF-8" />
+    <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <Switch>
+      <Route
+        exact
+        path="/"
+        render={() => (
+          <>
+            <meta name="description" content="Home description" />
+            <title>Home page great stuff</title>
+          </>
+        )}
+      />
+      <Route
+        path="/about"
+        render={() => (
+          <>
+            <meta name="description" content="About description" />
+            <title>About page</title>
+          </>
+        )}
+      />
+      <Route
+        path="/topics/:id"
+        render={({ match }) => (
+          <>
+            <meta name="description" content="Topics description" />
+            <title>{`Topics - ${match.params.id}`}</title>
+          </>
+        )}
+      />
+      <Route
+        path="/topics"
+        render={() => (
+          <>
+            <meta name="description" content="Topics description" />
+            <title>Topics in general</title>
+          </>
+        )}
+      />
+    </Switch>
+  </>
+)
+export default Head;

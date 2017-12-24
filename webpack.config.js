@@ -20,7 +20,7 @@ module.exports = [
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["env", "stage-2", "react"]
+              presets: ["@babel/preset-env", "@babel/preset-stage-2", "@babel/preset-react"]
             }
           },
           exclude: /node_modules/
@@ -85,7 +85,7 @@ module.exports = [
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["env", "stage-2", "react"]
+              presets: ["@babel/preset-env", "@babel/preset-stage-2", "@babel/preset-react"]
             }
           },
           exclude: /node_modules/

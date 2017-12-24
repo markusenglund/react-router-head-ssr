@@ -1,32 +1,32 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-import { createStore, combineReducers, compose, applyMiddleware } from "redux";
+import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import { routerForExpress } from "redux-little-router";
-
-import routes from "../app/routes";
+import { StaticRouter } from "react-router"
 import App from "../app/components/App";
 import Head from "../app/components/Head";
 import reducers from "../app/reducers/reducers";
 
 export default function renderPage(req, res) {
-  const { reducer, middleware, enhancer } = routerForExpress({
-    routes,
-    request: req
-  });
   const store = createStore(
-    combineReducers({ ...reducers, router: reducer }),
-    { counter: 5 },
-    compose(enhancer, applyMiddleware(middleware))
+    combineReducers(reducers),
+    { counter: 5 }
   );
+
+  const context = {}
+  
   const appString = renderToString(
     <Provider store={store}>
-      <App />
+      <StaticRouter location={req.url} context={context}>
+        <App />
+      </StaticRouter>
     </Provider>
   );
   const headString = renderToString(
     <Provider store={store}>
-      <Head />
+      <StaticRouter location={req.url} context={context}>
+        <Head />
+      </StaticRouter>
     </Provider>
   );
   const preloadedState = store.getState();

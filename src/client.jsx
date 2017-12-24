@@ -1,31 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import { routerForBrowser } from "redux-little-router";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { devToolsEnhancer } from "redux-devtools-extension";
+import { Router } from "react-router-dom"
+import createHistory from "history/createBrowserHistory"
 import reducers from "./app/reducers/reducers";
 import App from "./app/components/App";
 import Head from "./app/components/Head";
-import routes from "./app/routes";
 
-const { reducer, middleware, enhancer } = routerForBrowser({
-  routes
-});
+const history = createHistory()
 
 const preloadedState = window.PRELOADED_STATE;
 
 delete window.PRELOADED_STATE;
 
 const store = createStore(
-  combineReducers({ ...reducers, router: reducer }),
+  combineReducers(reducers),
   preloadedState,
-  composeWithDevTools(enhancer, applyMiddleware(middleware))
+  devToolsEnhancer()
 );
 const render = () => {
   ReactDOM.hydrate(
     <Provider store={store}>
-      <App />
+      <Router history={history}>
+        <App />
+      </Router>
     </Provider>,
     document.getElementById("app")
   );
@@ -34,7 +34,9 @@ const render = () => {
 const renderHead = () => {
   ReactDOM.hydrate(
     <Provider store={store}>
-      <Head />
+      <Router history={history}>
+        <Head/>
+      </Router>
     </Provider>,
     document.querySelector("head")
   );
