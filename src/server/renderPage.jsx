@@ -22,6 +22,7 @@ export default function renderPage(req, res) {
       </StaticRouter>
     </Provider>
   );
+
   const headString = renderToString(
     <Provider store={store}>
       <StaticRouter location={req.url} context={context}>
@@ -33,7 +34,7 @@ export default function renderPage(req, res) {
   const html = `
     <!DOCTYPE html>
     <html>
-      <head>${headString}</head>
+    <head>${headString}</head>
       <body>
         <div id="app">${appString}</div>
       </body>
